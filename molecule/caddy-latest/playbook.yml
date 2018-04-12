@@ -1,0 +1,6 @@
+---
+
+- name: Install Caddy
+  hosts: all
+  roles:
+    - { role: ansible-caddy }

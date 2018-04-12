@@ -1,0 +1,10 @@
+---
+
+- include: install-caddy.yml
+- include: configure-caddy.yml
+
+- name: Start and enable Caddy service
+  service:
+    name: caddy
+    state: started
+    enabled: true

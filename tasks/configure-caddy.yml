@@ -1,0 +1,68 @@
+---
+
+- name: Create the Caddy SSL certificates directory
+  file:
+    name: "{{ caddy_ssl_certificates_path }}"
+    state: directory
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0770
+
+- name: Create the Caddy configuration import directory
+  file:
+    name: "{{ caddy_config_import_path }}"
+    state: directory
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0555
+
+- name: Create the Caddy configuration import files
+  copy:
+    name: "{{ caddy_config_import_path }}/{{ item.key }}"
+    content: "{{ item.value }}"
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0440
+    validate: "{{ caddy_bin_path }}/caddy -conf %s -validate"
+  notify: restart caddy
+  with_dict: "{{ caddy_config_import_files }}"
+
+- name: Create the Caddy configuration file
+  template:
+    src: caddy.conf.j2
+    dest: "{{ caddy_config_file }}"
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0440
+    validate: "{{ caddy_bin_path }}/caddy -conf %s -validate"
+  notify: restart caddy
+
+- name: Create the Systemd Unit file for the Caddy service
+  template:
+    src: caddy.systemd.j2
+    dest: /etc/systemd/system/caddy.service
+    owner: root
+    group: root
+    mode: 0640
+  notify: reload systemd and restart caddy
+  when: ansible_service_mgr == "systemd"
+
+- name: Create the Upstart Unit file for the Caddy service
+  template:
+    src: caddy.upstart.j2
+    dest: /etc/init/caddy.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart caddy
+  when: ansible_service_mgr == "upstart"
+
+- name: Create the generic start-stop script for the Caddy service
+  template:
+    src: caddy.sysvinit.j2
+    dest: /etc/init.d/caddy
+    owner: root
+    group: root
+    mode: 0750
+  notify: restart caddy
+  when: ansible_service_mgr not in [ "systemd", "upstart" ]

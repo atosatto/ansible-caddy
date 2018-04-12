@@ -1,0 +1,12 @@
+---
+
+- name: restart caddy
+  service:
+    name: caddy
+    state: restarted
+
+- name: reload systemd and restart caddy
+  command: systemctl daemon-reload
+  notify: restart caddy
+  tags:
+    - skip_ansible_lint
