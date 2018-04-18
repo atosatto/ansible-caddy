@@ -41,9 +41,13 @@ Directory to which the Caddy biyy will be symlinked.
 Path to the main Caddy configuration file.
 
     caddy_config_import_path: "/etc/caddy.conf.d"
-    caddy_config_import_files: {}
+    caddy_config_import_files:
+      default: |
+        127.0.0.1:8080 {
+          root {{ caddy_web_root }}
+        }
 
-Directory including Caddy's additional configuration files to be imported in the `caddy_config_file` file.
+Caddy's additional configuration files to be imported in the `caddy_config_file` file.
 
     caddy_ssl_certificates_path: "/etc/ssl/caddy"
 
