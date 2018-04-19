@@ -1,5 +1,13 @@
 ---
 
+- name: Create the Caddy log files directory
+  file:
+    name: "{{ caddy_log_path }}"
+    state: directory
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_group }}"
+    mode: 0770
+
 - name: Create the Caddy SSL certificates directory
   file:
     name: "{{ caddy_ssl_certificates_path }}"
@@ -18,8 +26,8 @@
 
 - name: Create the Caddy configuration import files
   copy:
-    name: "{{ caddy_config_import_path }}/{{ item.key }}"
     content: "{{ item.value }}"
+    dest: "{{ caddy_config_import_path }}/{{ item.key }}.conf"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_group }}"
     mode: 0440
