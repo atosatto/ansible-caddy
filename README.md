@@ -18,10 +18,18 @@ Role Variables
 
 Available variables are listed below, along with default values (see defaults/main.yml):
 
+    caddy_download_url: ""
+    # caddy_download_url: "https://caddyserver.com/download/linux/amd64?plugins=http.prometheus&license=personal&telemetry=off"
+
+The location of the Caddy binary to be installed.
+The example above show how to download a pre-compiled Caddy realease including the `http.prometheus` plugin.
+When empty, the role will download Caddy from Github.
+
     caddy_release_tag: "latest"
 
-The Caddy release to be installed.
+The Caddy Github release to be installed.
 By default, the latest release published at https://github.com/caddy/caddy/releases.
+**NB**: this option has effect only when `caddy_download_url == ""`.
 
     caddy_user: "caddy"
     caddy_group: "caddy"
