@@ -22,7 +22,7 @@
     state: directory
     owner: "{{ caddy_user }}"
     group: "{{ caddy_group }}"
-    mode: 0555
+    mode: 0755
 
 - name: Create the Caddy configuration import files
   copy:
@@ -30,22 +30,22 @@
     dest: "{{ caddy_config_import_path }}/{{ item.key }}.conf"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_group }}"
-    mode: 0440
+    mode: 0640
     validate: "{{ caddy_bin_path }}/caddy -conf %s -validate"
   notify: restart caddy
   with_dict: "{{ caddy_config_import_files }}"
 
-- name: Create the Caddy configuration file
+- name: Create the main Caddy configuration file
   template:
     src: caddy.conf.j2
     dest: "{{ caddy_config_file }}"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_group }}"
-    mode: 0440
+    mode: 0640
     validate: "{{ caddy_bin_path }}/caddy -conf %s -validate"
   notify: restart caddy
 
-- name: Create the Systemd Unit file for the Caddy service
+- name: Create the Systemd unit file for the Caddy service
   template:
     src: caddy.systemd.j2
     dest: /etc/systemd/system/caddy.service

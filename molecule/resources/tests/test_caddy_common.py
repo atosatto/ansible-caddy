@@ -9,14 +9,14 @@ def test_caddy_config(host):
     assert f.is_file
     assert f.user == 'www-data'
     assert f.group == 'www-data'
-    assert oct(f.mode) == '0440'
+    assert oct(f.mode) == '0640'
 
     d = host.file('/etc/caddy.conf.d/')
     assert d.exists
     assert d.is_directory
     assert d.user == 'www-data'
     assert d.group == 'www-data'
-    assert oct(d.mode) == '0555'
+    assert oct(d.mode) == '0755'
 
     host.run("/usr/local/bin/caddy -conf /etc/caddy.conf -validate").rc == 0
 
