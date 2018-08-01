@@ -1,6 +1,11 @@
 ---
 
-# The Caddy release to be installed
+# The location of the Caddy binary to be installed
+# When empty the role downloads Caddy from Github
+caddy_download_url: ""
+
+# The Caddy Github release to be installed
+# NB: This has no effect when caddy_download_url != ""
 caddy_release_tag: "latest"
 
 # Caddy user and group

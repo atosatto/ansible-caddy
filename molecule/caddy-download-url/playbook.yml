@@ -1,0 +1,9 @@
+---
+
+- name: Install Caddy from a custom download URL
+  hosts: all
+  vars:
+    # Overrides the default role variables
+    caddy_download_url: "https://caddyserver.com/download/linux/amd64?plugins=http.prometheus&license=personal&telemetry=off"
+  roles:
+    - { role: ansible-caddy }

@@ -1,10 +1,9 @@
+import os
 import re
-import json
-import urllib2
+from github import Github
 
-
-caddy_last_release = re.sub('^v(.*)$', '\\1',
-        json.loads(urllib2.urlopen("https://api.github.com/repos/mholt/caddy/releases/latest").read())["tag_name"])
+gh = Github(os.getenv('TRAVIS_GH_TOKEN', None))
+caddy_last_release = re.sub('^v(.*)$', '\\1', gh.get_repo('mholt/caddy').get_latest_release().tag_name)
 caddy_last_artifact = "caddy_v" + caddy_last_release + "_linux_amd64"
 
 
