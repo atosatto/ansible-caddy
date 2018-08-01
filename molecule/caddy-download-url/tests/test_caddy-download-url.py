@@ -1,7 +1,3 @@
-import re
-import json
-import urllib2
-
 
 def test_caddy_binary(host):
 
